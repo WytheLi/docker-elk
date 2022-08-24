@@ -23,6 +23,12 @@ docker node ls
 docker swarm join --token SWMTKN-1-5fvug4drzimvwe6bhdn7duukp5147v4u8jyolcaucfqzvz3qmo-6mqhbj2wslwomcq0a44v71gdy 192.168.3.125:2377
 ```
 
+4、检查`docker-compose.yml`文件格式
+```shell
+docker-compose -f cluster/docker-compose.yml config
+```
+
+
 ### 参考文档
 - [ELK集群搭建系列教程——docker-compose一键式搭建](https://blog.csdn.net/yprufeng/article/details/115718441)
 - [docker-compose撰写规范](https://docs.docker.com/compose/compose-file/)
