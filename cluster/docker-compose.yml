@@ -86,11 +86,18 @@ services:
       placement:
         constraints:
           - node.role == manager
-#volumes:
-#  esdata1:
-#    driver: local
-#  esdata2:
-#    driver: local
+
+volumes:
+  esdata1:
+    driver: local
+  esdata2:
+    driver: local
+  logstash:
+    driver: local
+  filebeat:
+    driver: local
+  filebeat2:
+    driver: local
 
 networks:
   esnet:
