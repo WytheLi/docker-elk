@@ -24,5 +24,5 @@ docker swarm join --token SWMTKN-1-5fvug4drzimvwe6bhdn7duukp5147v4u8jyolcaucfqzv
 ```
 
 ### 参考文档
-[ELK集群搭建系列教程——docker-compose一键式搭建](https://blog.csdn.net/yprufeng/article/details/115718441)
-[docker-compose撰写规范](https://docs.docker.com/compose/compose-file/)
+- [ELK集群搭建系列教程——docker-compose一键式搭建](https://blog.csdn.net/yprufeng/article/details/115718441)
+- [docker-compose撰写规范](https://docs.docker.com/compose/compose-file/)

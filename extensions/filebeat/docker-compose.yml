@@ -3,7 +3,7 @@ filebeat:
   privileged: false
   restart: always
   volumes:
-  - .config/filebeat.yml:/usr/share/filebeat/filebeat.yml
+  - config/filebeat.yml:/usr/share/filebeat/filebeat.yml
   - /tmp:/tmp #/opt/log/filebeat为本机物理地址
   environment:
   - TZ=Asia/Shanghai

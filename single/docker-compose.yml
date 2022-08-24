@@ -12,7 +12,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - .config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
+      - config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
     ports:
       - 9200:9200
     networks:
@@ -30,7 +30,7 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - .config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
+      - config/elasticsearch.yml:/usr/share/elasticsearch/elasticsearch.yml
     networks:
       - esnet
   logstash:
@@ -44,7 +44,7 @@ services:
       - elasticsearch
       - elasticsearch2
     volumes:
-      - .config/logstash.yml:/usr/share/logstash/logstash.yml
+      - config/logstash.yml:/usr/share/logstash/logstash.yml
       - /var/log/nginx:/var/log/nginx
       - /tmp:/tmp
   logstash2:
@@ -58,7 +58,7 @@ services:
       - elasticsearch
       - elasticsearch2
     volumes:
-      - .config/logstash.yml:/usr/share/logstash/logstash.yml
+      - config/logstash.yml:/usr/share/logstash/logstash.yml
       - /var/log/nginx:/var/log/nginx
       - /tmp:/tmp
   kibana:
