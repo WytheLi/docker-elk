@@ -7,7 +7,7 @@ services:
       - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
-      - config/elasticsearch.yml:/usr/share/elasticsearch/data/elasticsearch.yml
+      - esdata1:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
     networks:
@@ -25,7 +25,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - "discovery.zen.ping.unicast.hosts=elasticsearch"
     volumes:
-      - config/elasticsearch2.yml:/usr/share/elasticsearch/data/elasticsearch.yml
+      - esdata2:/usr/share/elasticsearch/data
     networks:
       - esnet
     deploy:
@@ -39,6 +39,8 @@ services:
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     ports:
       - "5044:5044"
+    volumes:
+      - logstash:/usr/share/logstash/data
     networks:
       - esnet
     deploy:
@@ -49,7 +51,7 @@ services:
   filebeat:
     image: docker.elastic.co/beats/filebeat:6.2.4
     volumes:
-      - config/filebeat.yml:/usr/share/filebeat/data/filebeat.yml
+      - filebeat:/usr/share/filebeat/data
       - /tmp:/tmp #/opt/log/filebeat为本机物理地址
     environment:
       - TZ=Asia/Shanghai
@@ -63,7 +65,7 @@ services:
   filebeat2:
     image: docker.elastic.co/beats/filebeat:6.2.4
     volumes:
-      - config/filebeat.yml:/usr/share/filebeat/data/filebeat.yml
+      - filebeat2:/usr/share/filebeat/data
       - /tmp:/tmp #/opt/log/filebeat为本机物理地址
     environment:
       - TZ=Asia/Shanghai
