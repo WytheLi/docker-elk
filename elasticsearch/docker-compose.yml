@@ -34,55 +34,10 @@ services:
     networks:
       - esnet
 
-  logstash:
-    image: docker.elastic.co/logstash/logstash:6.2.4
-    environment:
-      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
-    container_name: logstash
-    networks:
-      - esnet
-    depends_on:
-      - elasticsearch
-      - elasticsearch2
-    volumes:
-      - logstash:/usr/share/logstash/data
-      - /var/log/nginx:/var/log/nginx
-      - /tmp:/tmp
-
-  logstash2:
-    image: docker.elastic.co/logstash/logstash:6.2.4
-    environment:
-      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
-    container_name: logstash2
-    networks:
-      - esnet
-    depends_on:
-      - elasticsearch
-      - elasticsearch2
-    volumes:
-      - logstash2:/usr/share/logstash/data
-      - /var/log/nginx:/var/log/nginx
-      - /tmp:/tmp
-
-  kibana:
-    image: docker.elastic.co/kibana/kibana:6.2.4
-    container_name: kibana
-    ports:
-      - "5601:5601"
-    networks:
-      - esnet
-    depends_on:
-      - elasticsearch
-      - elasticsearch2
-
 volumes:
   esdata:
     driver: local
   esdata2:
-    driver: local
-  logstash:
-    driver: local
-  logstash2:
     driver: local
 
 networks:

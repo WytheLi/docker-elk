@@ -28,6 +28,16 @@ docker swarm join --token SWMTKN-1-5fvug4drzimvwe6bhdn7duukp5147v4u8jyolcaucfqzv
 docker-compose -f cluster/docker-compose.yml config
 ```
 
+5、使用`docker stack deploy`启动服务
+```shell
+docker stack deploy -c cluster/docker-compose.yml elk
+```
+
+6、查看指定容器的日志
+```shell
+docker service logs elk_elasticsearch -f
+```
+
 
 ### 参考文档
 - [ELK集群搭建系列教程——docker-compose一键式搭建](https://blog.csdn.net/yprufeng/article/details/115718441)
