@@ -45,23 +45,9 @@ services:
       - elasticsearch
       - elasticsearch2
     volumes:
+      - ./config/logstash.conf:/etc/logstash/conf.d/logstash.conf
       - logstash:/usr/share/logstash/data
-      - /var/log/nginx:/var/log/nginx
-      - /tmp:/tmp
-
-  logstash2:
-    image: docker.elastic.co/logstash/logstash:6.2.4
-    environment:
-      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
-    container_name: logstash2
-    networks:
-      - esnet
-    depends_on:
-      - elasticsearch
-      - elasticsearch2
-    volumes:
-      - logstash2:/usr/share/logstash/data
-      - /var/log/nginx:/var/log/nginx
+      - /var/log/nginx:/usr/local/nginx
       - /tmp:/tmp
 
   kibana:

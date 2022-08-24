@@ -42,3 +42,4 @@ docker service logs elk_elasticsearch -f
 ### 参考文档
 - [ELK集群搭建系列教程——docker-compose一键式搭建](https://blog.csdn.net/yprufeng/article/details/115718441)
 - [docker-compose撰写规范](https://docs.docker.com/compose/compose-file/)
+- [Docker之docker-compose一键部署 Elasticsearch Logstash Kibana](https://blog.csdn.net/oschina_41731918/article/details/123098391)
