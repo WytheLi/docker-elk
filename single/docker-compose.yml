@@ -27,6 +27,7 @@ services:
     depends_on:
       - elasticsearch
     volumes:
+      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - logstash:/usr/share/logstash/data
       - /var/log/nginx:/usr/local/nginx
 
