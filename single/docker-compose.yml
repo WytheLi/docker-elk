@@ -61,6 +61,8 @@ services:
     container_name: kibana
     ports:
       - "5601:5601"
+    environment:
+      - elasticsearch.hosts=http://192.168.3.125:9200
     networks:
       - elastic
     depends_on:
