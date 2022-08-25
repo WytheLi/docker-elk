@@ -1,10 +1,13 @@
 version: '2.2'
 services:
-  elasticsearch:
+  es01:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
-    container_name: elasticsearch
+    container_name: es01
     environment:
+      - node.name=es01
       - cluster.name=docker-cluster
+      - discovery.seed_hosts=es02
+      - cluster.initial_master_nodes=es01,es02
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -12,25 +15,28 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - esdata:/usr/share/elasticsearch/data
+      - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
       - esnet
-  elasticsearch2:
+
+  es02:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
-    container_name: elasticsearch2
+    container_name: es02
     environment:
+      - node.name=es02
       - cluster.name=docker-cluster
+      - discovery.seed_hosts=es01
+      - cluster.initial_master_nodes=es01,es02
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
     ulimits:
       memlock:
         soft: -1
         hard: -1
     volumes:
-      - esdata2:/usr/share/elasticsearch/data
+      - data02:/usr/share/elasticsearch/data
     networks:
       - esnet
 
@@ -62,9 +68,9 @@ services:
       - elasticsearch2
 
 volumes:
-  esdata:
+  data01:
     driver: local
-  esdata2:
+  data02:
     driver: local
   logstash:
     driver: local
