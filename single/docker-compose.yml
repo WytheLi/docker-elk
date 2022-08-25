@@ -1,13 +1,10 @@
 version: '2.2'
 services:
-  es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-    container_name: es01
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
+    container_name: elasticsearch
     environment:
-      - node.name=es01
       - cluster.name=docker-cluster
-      - discovery.seed_hosts=es02
-      - cluster.initial_master_nodes=es01,es02
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
@@ -15,70 +12,39 @@ services:
         soft: -1
         hard: -1
     volumes:
-      - data01:/usr/share/elasticsearch/data
+      - esdata:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
       - elastic
 
-  es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
-    container_name: es02
-    environment:
-      - node.name=es02
-      - cluster.name=docker-cluster
-      - discovery.seed_hosts=es01
-      - cluster.initial_master_nodes=es01,es02
-      - bootstrap.memory_lock=true
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
-    volumes:
-      - data02:/usr/share/elasticsearch/data
-    networks:
-      - elastic
-
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.5.2
+    image: docker.elastic.co/logstash/logstash:6.2.4
     environment:
-      - xpack.monitoring.elasticsearch.hosts=http://192.168.3.125:9200
-      - xpack.monitoring.enabled=true
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     container_name: logstash
     networks:
       - elastic
     depends_on:
-      - es01
-      - es02
+      - elasticsearch
     volumes:
-      - ./config/logstash.conf:/etc/logstash/conf.d/logstash.conf
       - logstash:/usr/share/logstash/data
-      - /var/log/nginx:/usr/local/nginx
-      - /tmp:/tmp
+      - /var/log/nginx:/var/log/nginx
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.5.2
+    image: docker.elastic.co/kibana/kibana:6.2.4
     container_name: kibana
     ports:
       - "5601:5601"
-    environment:
-      - elasticsearch.hosts=http://192.168.3.125:9200
     networks:
       - elastic
     depends_on:
-      - es01
-      - es02
+      - elasticsearch
 
 volumes:
-  data01:
-    driver: local
-  data02:
+  esdata:
     driver: local
   logstash:
-    driver: local
-  logstash2:
     driver: local
 
 networks:
