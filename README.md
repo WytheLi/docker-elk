@@ -45,4 +45,6 @@ docker service logs elk_elasticsearch -f
 - [Docker之docker-compose一键部署 Elasticsearch Logstash Kibana](https://blog.csdn.net/oschina_41731918/article/details/123098391)
 - [ELK镜像官方地址](https://www.docker.elastic.co/)
 - [elasticsearch](https://www.docker.elastic.co/r/elasticsearch)
-- [reference](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docker.html)
+- [elasticsearch-v7.5](https://www.elastic.co/guide/en/elasticsearch/reference/7.5/docker.html)
+- [kibana-v7.5](https://www.elastic.co/guide/en/kibana/7.5/docker.html)
+- [logstash-v7.5](https://www.elastic.co/guide/en/logstash/7.5/docker.html)

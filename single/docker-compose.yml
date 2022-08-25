@@ -43,6 +43,8 @@ services:
   logstash:
     image: docker.elastic.co/logstash/logstash:7.5.2
     environment:
+      - xpack.monitoring.elasticsearch.hosts=http://192.168.3.125:9200
+      - xpack.monitoring.enabled=true
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     container_name: logstash
     networks:
