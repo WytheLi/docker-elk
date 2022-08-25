@@ -28,7 +28,7 @@ services:
       - elasticsearch
     volumes:
       - logstash:/usr/share/logstash/data
-      - /var/log/nginx:/var/log/nginx
+      - /var/log/nginx:/usr/local/nginx
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
