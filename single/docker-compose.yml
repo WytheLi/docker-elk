@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   es01:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     container_name: es01
     environment:
       - node.name=es01
@@ -19,10 +19,10 @@ services:
     ports:
       - 9200:9200
     networks:
-      - esnet
+      - elastic
 
   es02:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.1
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.5.2
     container_name: es02
     environment:
       - node.name=es02
@@ -38,18 +38,18 @@ services:
     volumes:
       - data02:/usr/share/elasticsearch/data
     networks:
-      - esnet
+      - elastic
 
   logstash:
-    image: docker.elastic.co/logstash/logstash:7.5.1
+    image: docker.elastic.co/logstash/logstash:7.5.2
     environment:
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     container_name: logstash
     networks:
-      - esnet
+      - elastic
     depends_on:
-      - elasticsearch
-      - elasticsearch2
+      - es01
+      - es02
     volumes:
       - ./config/logstash.conf:/etc/logstash/conf.d/logstash.conf
       - logstash:/usr/share/logstash/data
@@ -57,15 +57,15 @@ services:
       - /tmp:/tmp
 
   kibana:
-    image: docker.elastic.co/kibana/kibana:7.5.1
+    image: docker.elastic.co/kibana/kibana:7.5.2
     container_name: kibana
     ports:
       - "5601:5601"
     networks:
-      - esnet
+      - elastic
     depends_on:
-      - elasticsearch
-      - elasticsearch2
+      - es01
+      - es02
 
 volumes:
   data01:
@@ -78,4 +78,4 @@ volumes:
     driver: local
 
 networks:
-  esnet:
+  elastic:
