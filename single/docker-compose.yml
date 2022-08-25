@@ -29,8 +29,7 @@ services:
     volumes:
       - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - logstash:/usr/share/logstash/data
-      - /var/log/nginx/access.log:/tmp/access.log
-      - /tmp/info.log:/tmp/info.log
+      - /tmp:/tmp
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
