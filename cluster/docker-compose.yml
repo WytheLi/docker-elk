@@ -3,74 +3,44 @@ services:
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
     environment:
-      - cluster.name=docker-cluster
       - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
-      - esdata1:/usr/share/elasticsearch/data
+      - esdata:/usr/share/elasticsearch/data
     ports:
-      - "9200:9200"
+      - 9200:9200
     networks:
-      - esnet
+      - elastic
     deploy:
       placement:
         constraints:
           - node.role == manager
-
-  elasticsearch2:
-    image: docker.elastic.co/elasticsearch/elasticsearch:6.2.4
-    environment:
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-      - "discovery.zen.ping.unicast.hosts=elasticsearch"
-    volumes:
-      - esdata2:/usr/share/elasticsearch/data
-    networks:
-      - esnet
-    deploy:
-      placement:
-        constraints:
-          - node.role == worker
 
   logstash:
     image: docker.elastic.co/logstash/logstash:6.2.4
     environment:
       - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
-    ports:
-      - "5044:5044"
+    networks:
+      - elastic
     volumes:
+      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
       - logstash:/usr/share/logstash/data
-    networks:
-      - esnet
+      - /tmp:/tmp
     deploy:
       placement:
         constraints:
           - node.role == manager
 
-  filebeat:
-    image: docker.elastic.co/beats/filebeat:6.2.4
-    volumes:
-      - filebeat:/usr/share/filebeat/data
-      - /tmp:/tmp #/opt/log/filebeat为本机物理地址
+  logstash1:
+    image: docker.elastic.co/logstash/logstash:6.2.4
     environment:
-      - TZ=Asia/Shanghai
+      - "LS_JAVA_OPTS=-Xms256m -Xmx256m"
     networks:
-      - esnet
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-
-  filebeat2:
-    image: docker.elastic.co/beats/filebeat:6.2.4
+      - elastic
     volumes:
-      - filebeat2:/usr/share/filebeat/data
-      - /tmp:/tmp #/opt/log/filebeat为本机物理地址
-    environment:
-      - TZ=Asia/Shanghai
-    networks:
-      - esnet
+      - ./config/logstash.conf:/usr/share/logstash/pipeline/logstash.conf
+      - logstash1:/usr/share/logstash/data
+      - /tmp:/tmp
     deploy:
       placement:
         constraints:
@@ -78,27 +48,25 @@ services:
 
   kibana:
     image: docker.elastic.co/kibana/kibana:6.2.4
+    volumes:
+      - ./config/kibana.yml:/usr/share/kibana/config/kibana.yml
     ports:
       - "5601:5601"
     networks:
-      - esnet
+      - elastic
     deploy:
       placement:
         constraints:
           - node.role == manager
 
 volumes:
-  esdata1:
-    driver: local
-  esdata2:
+  esdata:
     driver: local
   logstash:
     driver: local
-  filebeat:
-    driver: local
-  filebeat2:
+  logstash1:
     driver: local
 
 networks:
-  esnet:
+  elastic:
     driver: "overlay"
